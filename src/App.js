@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+
+const NPOINT_URL = "https://api.npoint.io/6c29fa33d9d1e9601df3";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  useEffect(() => {
+    const { pathname } = window.location;
+    let id = pathname.replace("/", "");
+
+    fetch(NPOINT_URL)
+      .then((body) => body.json())
+      .then((data) => {
+        Object.keys(data).map((key) => {
+          if (id === key) {
+            window.location = data[key].link;
+          }
+        });
+      });
+  });
+  return <div>Loading...</div>;
 }
 
 export default App;
